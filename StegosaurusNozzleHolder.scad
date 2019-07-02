@@ -187,12 +187,14 @@ module nozzle(thread=6) {
 }
 
 module nozzles(thread) {
-    translate([-4.9, 0, 1.6]) rotate([35, 0, 90])
+    translate([-4.9, -2.50, 1.6]) rotate([35, -15.0, 90])
         nozzle(thread);
-    translate([-7, -10.5, 0.9]) rotate([35, -30, 100]) nozzle(thread);
-    translate([-7, 8.5, 0.9]) rotate([35, 30, 80]) nozzle(thread);
-    translate([-7, -22.5, -3.9]) rotate([35, -30, 100]) nozzle(thread);
-    translate([-7, 20.5, -3.9]) rotate([35, 30, 80]) nozzle(thread);
+    translate([-4.9, 1.50, 1.6]) rotate([35, 15.0, 90])
+        nozzle(thread);
+    translate([-7, -11.5, 0.9]) rotate([35, -30, 100]) nozzle(thread);
+    translate([-7, 10.5, 0.9]) rotate([35, 30, 80]) nozzle(thread);
+    translate([-7, -23.5, -3.9]) rotate([35, -30, 100]) nozzle(thread);
+    translate([-7, 22.5, -3.9]) rotate([35, 30, 80]) nozzle(thread);
 }
 
 module stegosaurus_nozz(thread=6){
