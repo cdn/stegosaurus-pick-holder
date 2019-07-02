@@ -1,5 +1,10 @@
 // StegosaurusPickHolder.scad - a 3D printable model of a guitar pick holder
 // Copyright (C) 2018 Jaromir Hradilek
+// 2019 cn
+
+include <ISOThreadUM2.scad>
+
+// Thread library licensed Creative Commons Public Domain Dedication
 
 // This program is free software:  you can redistribute it and/or modify it
 // under  the terms of the  GNU General Public License  as published by the
@@ -13,8 +18,9 @@
 // You should have received a copy of the  GNU General Public License along
 // with this program. If not, see <http://www.gnu.org/licenses/>.
 
+nozzle_thread = 6;
 // Change these to customize the model for your guitar picks:
-pick_shape = "jazz";          // The guitar pick shape, "jazz" or "tortex"
+pick_shape = "nozz";          // The guitar pick shape, "jazz" or "tortex"
 pick_thickness = 1.38;        // The thickness of your pick
 pick_tolerance = 0.12;        // The additional width of the pick slots
 
@@ -163,6 +169,42 @@ module stegosaurus_tortex(thickness=1.0) {
     }
 }
 
+module nozzle(thread=6) {
+    d1=10;
+    d2=9;
+    h=0.75;
+    union() {
+            translate([0,0,15.0]) color("LightBlue")
+            difference() {
+            union() {
+                cylinder(d=10,10);
+                translate([0,0,10]) cylinder(d1=d1,d2=d2,h);
+            }
+            translate([0,0,-0.1]) cylinder(d=thread,11.2);
+            }
+            translate([0,0,14.3]) thread_in(thread,12);
+    }
+}
+
+module nozzles(thread) {
+    translate([-4.9, 0, 1.6]) rotate([35, 0, 90])
+        nozzle(thread);
+    translate([-7, -10.5, 0.9]) rotate([35, -30, 100]) nozzle(thread);
+    translate([-7, 8.5, 0.9]) rotate([35, 30, 80]) nozzle(thread);
+    translate([-7, -22.5, -3.9]) rotate([35, -30, 100]) nozzle(thread);
+    translate([-7, 20.5, -3.9]) rotate([35, 30, 80]) nozzle(thread);
+}
+
+module stegosaurus_nozz(thread=6){
+    union() {
+        color("SeaGreen")
+        body(15);
+    //    nozzle(thread);
+        mirror([1,0,0]) nozzles(thread);
+        nozzles(thread);
+    }
+}
+
 // A guitar pick holder with the Jazz III shaped slots:
 module stegosaurus_jazz(thickness=1.38) {
     difference() {
@@ -175,6 +217,9 @@ module stegosaurus_jazz(thickness=1.38) {
 // Determine which guitar pick shape to use:
 if (pick_shape == "tortex") {
     stegosaurus_tortex(pick_thickness + pick_tolerance);
+}
+else if (pick_shape == "nozz") {
+    stegosaurus_nozz(nozzle_thread);
 }
 else if (pick_shape == "jazz") {
     stegosaurus_jazz(pick_thickness + pick_tolerance);
