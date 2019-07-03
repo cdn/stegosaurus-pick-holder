@@ -1,4 +1,4 @@
-// StegosaurusPickHolder.scad - a 3D printable model of a guitar pick holder
+// StegosaurusNozzleHolder.scad - a 3D printable model of a 3D printer nozzle holder
 // Copyright (C) 2018 Jaromir Hradilek
 // 2019 cn
 
