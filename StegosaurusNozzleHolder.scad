@@ -193,7 +193,7 @@ module nozzles(thread) {
         nozzle(thread);
     translate([-7, -11.5, 0.9]) rotate([35, -30, 100]) nozzle(thread);
     translate([-7, 10.5, 0.9]) rotate([35, 30, 80]) nozzle(thread);
-    translate([-7, -23.5, -3.9]) rotate([35, -30, 100]) nozzle(thread);
+    translate([-7, -23.5, -4.9]) rotate([35, -30, 100]) nozzle(thread);
     translate([-7, 21.5, -5.49]) rotate([35, 30, 80]) nozzle(thread);
 }
 
