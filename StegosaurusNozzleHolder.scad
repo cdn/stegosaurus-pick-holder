@@ -170,38 +170,75 @@ module stegosaurus_tortex(thickness=1.0) {
 }
 
 module nozzle(thread=6) {
-    d1=10;
+    // if thread == 0 we’re creating space for a >0 call of module in same coordinates
+    
+    // commented wiggle room for insertions
+    d1=10;//+0.2;
     d2=9;
     h=0.75;
+    z=6.0;
+    z2=8;
     union() {
-            translate([0,0,15.0]) color("LightBlue")
+            translate([0,0,z+5.0]) color("LightBlue")
             difference() {
             union() {
-                cylinder(d=10,10);
-                translate([0,0,10]) cylinder(d1=d1,d2=d2,h);
+                // commented cylinders substituted for
+                // individual threaded sockets ease of
+                // insertion
+                
+              //  cylinder(d1=8,d2=10,3);
+              //  translate([0,0,3]) cylinder(d=10,z2-3);
+                cylinder(d=10,z2);
+              //  translate([0,0,-1]) cylinder(d=10-2,1);
+                translate([0,0,-1]) cylinder(d=10,1);
+                
+                // conical chamfer piece
+                translate([0,0,z2]) cylinder(d1=d1,d2=d2,h);
             }
+            // “drill” hole for thread
+            if(thread>0) {
             translate([0,0,-0.1]) cylinder(d=thread,11.2);
             }
-            translate([0,0,14.3]) thread_in(thread,12);
+        }
+            if(thread>0) {
+                difference() {
+                    translate([0,0,z+3+4.3]) thread_in(thread,z+1);
+                    //slice top of helix
+                    translate([0,0,5+z+z2+h])  cylinder(d=d2,1);
+                }
+            }
     }
 }
 
 module nozzles(thread) {
+    difference() {
+    union() {
     translate([-4.9, -2.50, 1.6]) rotate([35, -15.0, 90])
         nozzle(thread);
     translate([-4.9, 1.50, 1.6]) rotate([35, 15.0, 90])
         nozzle(thread);
     translate([-7, -11.5, 0.9]) rotate([35, -30, 100]) nozzle(thread);
     translate([-7, 10.5, 0.9]) rotate([35, 30, 80]) nozzle(thread);
-    translate([-7, -23.5, -4.9]) rotate([35, -30, 100]) nozzle(thread);
+        // -4.9 ?
+    translate([-7, -23.5, -3.9]) rotate([35, -30, 100]) nozzle(thread);
     translate([-7, 21.5, -5.49]) rotate([35, 30, 80]) nozzle(thread);
+    }
+    // slice away portion that overlaps and interferes
+        translate([-9.99,-40,-1.0])  cube([10,80,20]);
+    }
 }
 
 module stegosaurus_nozz(thread=6){
     union() {
-        color("SeaGreen")
-        body(15);
-    //    nozzle(thread);
+      /**/
+        difference() {
+          color("SeaGreen")
+            body(15);
+          mirror([1,0,0]) nozzles(0);
+          nozzles(0);
+        }
+      /**/
+
         mirror([1,0,0]) nozzles(thread);
         nozzles(thread);
     }
