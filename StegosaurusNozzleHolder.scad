@@ -82,57 +82,6 @@ module pick_tortex(thickness=1.0) {
     }
 }
 
-// A generic guitar pick in the Jazz III shape:
-module pick_jazz(thickness=1.38) {
-    // Define the constant for proper scaling:
-    profile_scale = 25.4/90;
-
-    // Define the vectors for the guitar pick shape:
-    points = [
-      [-0.000002,-44.291340],[-2.996548,-44.183335],
-      [-5.945434,-43.863642],[-8.837953,-43.338740],
-      [-11.665400,-42.615113],[-14.419072,-41.699240],
-      [-17.090264,-40.597604],[-19.670270,-39.316685],
-      [-22.150386,-37.862965],[-24.521908,-36.242925],
-      [-26.776131,-34.463046],[-28.904349,-32.529810],
-      [-30.897859,-30.449697],[-32.747955,-28.229190],
-      [-34.445933,-25.874768],[-35.983089,-23.392915],
-      [-37.350716,-20.790110],[-38.153680,-18.815300],
-      [-38.559055,-16.740279],[-38.650925,-14.660042],
-      [-38.513378,-12.669589],[-37.886370,-9.338022],
-      [-37.350716,-7.505560],[-34.692018,-0.178935],
-      [-31.529383,6.915656],[-27.878904,13.753414],
-      [-23.756674,20.309540],[-19.178786,26.559235],
-      [-14.161333,32.477699],[-8.720407,38.040134],
-      [-2.872101,43.221740],[-1.407229,44.031152],
-      [-0.000002,44.291340],[1.407224,44.031415],
-      [2.872062,43.221740],[8.720371,38.040134],
-      [14.161301,32.477699],[19.178761,26.559235],
-      [23.756656,20.309540],[27.878892,13.753414],
-      [31.529377,6.915656],[34.692016,-0.178935],
-      [37.350716,-7.505560],[37.886370,-9.338022],
-      [38.513378,-12.669589],[38.650925,-14.660042],
-      [38.559055,-16.740279],[38.153680,-18.815300],
-      [37.350716,-20.790110],[35.983095,-23.392705],
-      [34.445944,-25.873983],[32.747969,-28.227550],
-      [30.897875,-30.447006],[28.904366,-32.525955],
-      [26.776148,-34.457999],[24.521924,-36.236743],
-      [22.150401,-37.855788],[19.670283,-39.308737],
-      [17.090274,-40.589193],[14.419080,-41.690759],
-      [11.665405,-42.607038],[8.837955,-43.331633],
-      [5.945434,-43.858146],[2.996547,-44.180181],
-      [-0.000002,-44.291340],[-0.000002,-44.291340]];
-
-    // Scale the guitar pick to the proper size:
-    scale([profile_scale, -profile_scale, 1]) {
-        // Create the guitar pick shape from supplied vectors and
-        // extrude it to proper thickness:
-        union() {
-            linear_extrude(height=thickness)
-            polygon(points);
-        }
-    }
-}
 
 // A low poly model of a Stegosaurus without its plates:
 module body(scale_factor=1) {
@@ -175,9 +124,15 @@ module nozzle(thread=6, colour) {
     // commented wiggle room for insertions
     d1=10;//+0.2;
     d2=9;
+    d3=8;
     h=0.75;
     z=6.0;
     z2=8;
+    // wiggle room
+    if(thread>0) {
+        d1 = d1 + 0.3;
+        d3 = d3 + 0.3;
+    }
     union() {
             translate([0,0,z+5.0]) color(colour)
             difference() {
@@ -186,11 +141,11 @@ module nozzle(thread=6, colour) {
                 // individual threaded sockets ease of
                 // insertion
                 
-              //  cylinder(d1=8,d2=10,3);
-              //  translate([0,0,3]) cylinder(d=10,z2-3);
-                cylinder(d=10,z2);
-              //  translate([0,0,-1]) cylinder(d=10-2,1);
-                translate([0,0,-1]) cylinder(d=10,1);
+                cylinder(d1=d3,d2=d1,3);
+                translate([0,0,3]) cylinder(d=d1,z2-3);
+//                cylinder(d=10,z2);
+                translate([0,0,-1]) cylinder(d=d3,1);
+//                translate([0,0,-1]) cylinder(d=10,1);
                 
                 // conical chamfer piece
                 translate([0,0,z2]) cylinder(d1=d1,d2=d2,h);
@@ -230,17 +185,19 @@ module nozzles(thread, colour="LightBlue") {
 
 module stegosaurus_nozz(thread=6){
     union() {
-      /**/
+        // Comment out to produce the "ridges"
+      /**
         difference() {
           color("SeaGreen")
             body(15);
           mirror([1,0,0]) nozzles(0);
           nozzles(0);
         }
-      /**/
+      **/
 
+    // Comment out to produce body with recesses
         mirror([1,0,0]) nozzles(thread, "Gold");
-        nozzles(thread, "Silver");
+       // nozzles(thread, "Silver");
     }
 }
 
