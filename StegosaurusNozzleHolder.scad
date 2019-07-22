@@ -102,13 +102,6 @@ module plates_tortex(thickness=1.0) {
     translate([-9, 30, 14]) rotate([255, 30, 80]) pick_tortex(thickness);
 }
 
-// Jazz III shaped picks placed along the left side of the body:
-module plates_jazz(thickness=1.38) {
-    translate([-9, 0, 16]) rotate([255, 0, 90]) pick_jazz(thickness);
-    translate([-7, -25, 9]) rotate([255, -30, 100]) pick_jazz(thickness);
-    translate([-7, 25, 9]) rotate([255, 30, 80]) pick_jazz(thickness);
-}
-
 // A guitar pick holder with the Tortex shaped slots:
 module stegosaurus_tortex(thickness=1.0) {
     difference() {
@@ -196,19 +189,13 @@ module stegosaurus_nozz(thread=6){
       **/
 
     // Comment out to produce body with recesses
-        mirror([1,0,0]) nozzles(thread, "Gold");
-       // nozzles(thread, "Silver");
+        // Left from Steg's POV
+       // mirror([1,0,0]) nozzles(thread, "Gold");
+        // Right
+        nozzles(thread, "Silver");
     }
 }
 
-// A guitar pick holder with the Jazz III shaped slots:
-module stegosaurus_jazz(thickness=1.38) {
-    difference() {
-        color("SeaGreen") body(14);
-        color("Crimson") plates_jazz(thickness);
-        color("Crimson") mirror([1,0,0]) plates_jazz(thickness);
-    }
-}
 
 // Determine which guitar pick shape to use:
 if (pick_shape == "tortex") {
@@ -216,7 +203,4 @@ if (pick_shape == "tortex") {
 }
 else if (pick_shape == "nozz") {
     stegosaurus_nozz(nozzle_thread);
-}
-else if (pick_shape == "jazz") {
-    stegosaurus_jazz(pick_thickness + pick_tolerance);
 }
